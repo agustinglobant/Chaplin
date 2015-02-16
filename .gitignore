@@ -4,3 +4,4 @@
 /.idea/libraries
 .DS_Store
 /build
+/app/src/main/res/values/app_credentials.xml
