@@ -16,9 +16,10 @@ import retrofit.http.Path;
  */
 public class ChaplinService {
 
-    final static String TRAKT_API_URL = "https://api-v2launch.trakt.tv";
+    final static String TRAKT_API_URL = "https://private-anon-e71ba2ba1-trakt.apiary-mock.com";
     final static String ACCEPTED_DATA = "application/json";
     final static String API_VERSION = "2";
+
     final static String SHOWS_ENDPOINT = "/users/{username}/watchlist/shows";
 
     public ChaplinService() {
@@ -36,10 +37,9 @@ public class ChaplinService {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addHeader("Accept", ACCEPTED_DATA);
-                        request.addHeader("Version", API_VERSION);
-                        /* trakt-api-version: 2
-                           trakt-api-key: [client_id] */
+                        request.addHeader("Content-Type", ACCEPTED_DATA);
+                        request.addHeader("trakt-api-version", API_VERSION);
+                       // request.addHeader("trakt-api-key", );
                     }
                 });
         RestAdapter restAdapter = builder.build();

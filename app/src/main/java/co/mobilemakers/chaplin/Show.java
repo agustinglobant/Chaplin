@@ -32,6 +32,6 @@ public class Show {
 
     @Override
     public String toString() {
-        return mTitle + "(" + mYear + ")";
+        return mTitle + " (" + mYear + ")";
     }
 }
