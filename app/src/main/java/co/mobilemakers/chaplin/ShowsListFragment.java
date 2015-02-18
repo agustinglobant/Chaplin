@@ -33,15 +33,16 @@ public class ShowsListFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-     //   retrieveUsername();
+        retrieveUsername();
         prepareListView();
     }
 
-   /* private void retrieveUsername() {
-        if (getArguments().containsKey(USERNAME)) {
+    private void retrieveUsername() {
+        /*if (getArguments().containsKey(USERNAME)) {
             mUsername = getArguments().getString(USERNAME);
-        }
-    }*/
+        }*/
+        mUsername = "sean";
+    }
 
     private void prepareListView() {
         List<WatchList> shows = new ArrayList<>();

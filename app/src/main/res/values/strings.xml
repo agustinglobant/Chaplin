@@ -2,11 +2,13 @@
 <resources>
 
     <string name="app_name">Chaplin</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_shows_list">Watchlist</string>
     <string name="edit_text_username_hint">Username</string>
     <string name="edit_text_password_hint">Password</string>
-    <string name="button_login">Login</string>
+    <string name="button_login">SIGN IN</string>
+    <string name="radio_button_watching_this">Watching this</string>
+    <string name="radio_button_watched">Watched</string>
+    <string name="button_confirm">CONFIRM</string>
 
 </resources>
