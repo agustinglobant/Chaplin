@@ -1,52 +1,63 @@
 package co.mobilemakers.chaplin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.squareup.okhttp.Authenticator;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.net.Proxy;
 
 
 public class ChaplinMainActivity extends ActionBarActivity {
 
-    private String clientId = "e57d3ee05117f15cf6f5bd058d12f0a480406976c446f26963856812691c7dc2";
-    private String clientSecret = "9572a76d16a29067d252efff05d8c4c8973bee76fe6452008e60d61a1bc7515c";
+    private String clientId;
+    private String clientSecret;
     private String redirectUri = "urn:ietf:wg:oauth:2.0:oob";
+
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        clientId = getString(R.string.client_id);
+        clientSecret = getString(R.string.client_secret);
         setContentView(R.layout.activity_chaplin_main);
         Button loginButton = (Button) findViewById(R.id.button_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(LoginService.BASE_URL_FOR_LOGIN + "/authorize"
-                                + "?response_type=code&client_id="+ clientId
-                                +"&redirect_uri=" + redirectUri));
-                startActivity(intent);
+                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                String token = sharedPref.getString(getString(R.string.access_token), "");
+                if (token == "") {
+                    Intent intent = new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(LoginService.BASE_URL_FOR_LOGIN + "/authorize"
+                                    + "?response_type=code&client_id="+ clientId
+                                    +"&redirect_uri=" + redirectUri));
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"You already have your token!",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }
@@ -56,33 +67,52 @@ public class ChaplinMainActivity extends ActionBarActivity {
         super.onResume();
         Intent intent =  getIntent();
         Uri uri = intent.getData();
-        if (uri != null) {
-            String code = uri.getLastPathSegment();
-            LoginService loginService = ServiceGenerator.createService(LoginService.class,
-                                                                       LoginService.BASE_URL,
-                                                                       clientId,
-                                                                       clientSecret);
-//            AccessToken accessToken = loginService.getAccessToken(code,
-//                                                                  clientId,
-//                                                                  clientSecret,
-//                                                                  redirectUri,
-//                                                                  "authorization_code");
-
-            Request request = new Request.Builder().url(LoginService.BASE_URL+"/oauth/token").build();
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Request request, IOException e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Response response) throws IOException {
-                    Log.i("Access Token", response.body().string());
-                }
-            });
-        } else {
-            Log.e("ERROR", "Uri is null");
+        if (uri != null){
+            authenticate(uri);
+            Toast.makeText(getApplicationContext(),"You obtain an access token! YAY!",Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void authenticate(Uri uri) {
+        String code = uri.getLastPathSegment();
+
+        JsonObject jsonObject = createJsonForTokenRequest(code);
+        RequestBody requestBody = RequestBody.create(JSON, jsonObject.toString());
+        Request request = new Request.Builder().url(LoginService.BASE_URL+"/oauth/token")
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String body = response.body().string();
+                Gson gson = new Gson();
+                TokenResponse mTokenResponse = gson.fromJson(body, TokenResponse.class);
+                saveAccessToken(mTokenResponse.getAccessToken());
+            }
+
+            private void saveAccessToken(String access_token) {
+                    SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(getString(R.string.access_token), access_token);
+                    editor.commit();
+            }
+        });
+    }
+
+    private JsonObject createJsonForTokenRequest(String code) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("code", code);
+        jsonObject.addProperty("client_id", clientId);
+        jsonObject.addProperty("client_secret", clientSecret);
+        jsonObject.addProperty("redirect_uri", redirectUri);
+        jsonObject.addProperty("grant_type", "authorization_code");
+        return jsonObject;
     }
 
     @Override
