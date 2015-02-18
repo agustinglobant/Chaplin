@@ -10,5 +10,7 @@
     <string name="radio_button_watching_this">Watching this</string>
     <string name="radio_button_watched">Watched</string>
     <string name="button_confirm">CONFIRM</string>
+    <string name="title_activity_episodes_list">Episodes</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

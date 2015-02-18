@@ -19,8 +19,9 @@ public class ChaplinService {
     final static String TRAKT_API_URL = "https://private-anon-e71ba2ba1-trakt.apiary-mock.com";
     final static String ACCEPTED_DATA = "application/json";
     final static String API_VERSION = "2";
-    final static String CLIENT_ID = "e57d3ee05117f15cf6f5bd058d12f0a480406976c446f26963856812691c7dc2";
+    final static String CLIENT_ID = "ñ";
     final static String SHOWS_ENDPOINT = "/users/{username}/watchlist/shows";
+    final static String EPISODES_ENDPOINT = "/users/{username}/watchlist/episodes";
 
     public ChaplinService() {
     }
@@ -28,6 +29,9 @@ public class ChaplinService {
     public interface ApiInterface {
         @GET(SHOWS_ENDPOINT)
         void getShows(@Path("username")String username, Callback<List<WatchList>> callback);
+
+        @GET(EPISODES_ENDPOINT)
+        void getEpisodes(@Path("username")String username, Callback<List<WatchList>> callback);
     }
 
        public ApiInterface generateServiceInterface() {
@@ -39,7 +43,7 @@ public class ChaplinService {
                     public void intercept(RequestFacade request) {
                         request.addHeader("Content-Type", ACCEPTED_DATA);
                         request.addHeader("trakt-api-version", API_VERSION);
-                        request.addHeader("trakt-api-key", CLIENT_ID );
+                        request.addHeader("trakt-api-key", CLIENT_ID);
                     }
                 });
         RestAdapter restAdapter = builder.build();

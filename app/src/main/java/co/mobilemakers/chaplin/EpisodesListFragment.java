@@ -8,26 +8,24 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
-public class ShowsListFragment extends ListFragment {
-
-    public final static String USERNAME = "USERNAME";
-    public static final String SHOW_NAME = "SHOW_NAME" ;
+public class EpisodesListFragment extends ListFragment {
 
     private String mUsername = "";
     private ChaplinService.ApiInterface mChaplinInterface;
     private ArrayAdapter<WatchList> mAdapter;
 
-    public ShowsListFragment() {
+    public EpisodesListFragment() {
     }
 
-    @Override
+      @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ChaplinService chaplinService = new ChaplinService();
@@ -55,11 +53,6 @@ public class ShowsListFragment extends ListFragment {
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                WatchList selectedWatchList = mAdapter.getItem(position);
-                String showName = selectedWatchList.getmShow().getmTitle();
-                Intent intent = new Intent (getActivity(), ShowsListActivity.class);
-                intent.putExtra(SHOW_NAME, showName);
-                startActivity(intent);
             }
         });
     }
