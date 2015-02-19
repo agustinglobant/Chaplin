@@ -2,22 +2,24 @@ package co.mobilemakers.chaplin;
 
 import com.google.gson.annotations.SerializedName;
 
+import co.mobilemakers.chaplin.shows.ShowInfo;
+
 /**
  * Created by Micaela on 16/02/2015.
  */
 public class WatchList {
 
     @SerializedName("movie")
-    Show mShow;
+    ShowInfo mShow;
 
     public WatchList() {
     }
 
-    public Show getmShow() {
+    public ShowInfo getmShow() {
         return mShow;
     }
 
-    public void setmShow(Show mShow) {
+    public void setmShow(ShowInfo mShow) {
         this.mShow = mShow;
     }
 

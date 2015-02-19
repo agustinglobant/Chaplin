@@ -55,6 +55,9 @@ public class ChaplinMainActivity extends ActionBarActivity {
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(),"You already have your token!",Toast.LENGTH_LONG).show();
+                    Intent shows = new Intent(getApplicationContext(), ShowsListActivity.class);
+                    shows.putExtra("token", token);
+                    startActivity(shows);
                 }
 
             }
@@ -69,6 +72,8 @@ public class ChaplinMainActivity extends ActionBarActivity {
         if (uri != null){
             authenticate(uri);
             Toast.makeText(getApplicationContext(),"You obtain an access token! YAY!",Toast.LENGTH_LONG).show();
+            Intent shows = new Intent(this, ShowsListActivity.class);
+            startActivity(shows);
         }
     }
 
