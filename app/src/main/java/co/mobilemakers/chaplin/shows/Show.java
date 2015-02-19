@@ -2,49 +2,25 @@ package co.mobilemakers.chaplin.shows;
 
 import com.google.gson.annotations.SerializedName;
 
+import co.mobilemakers.chaplin.shows.ShowInfo;
+
 /**
- * Created by agustin.gugliotta on 19/02/2015.
+ * Created by Micaela on 16/02/2015.
  */
 public class Show {
-    @SerializedName("listed_at")
-    private String mListedAt;
-    @SerializedName("type")
-    private String mType;
+
     @SerializedName("show")
-    private ShowInfo mShowInfo;
+    ShowInfo mShow;
 
     public Show() {
     }
 
-    public String getListedAt() {
-        return mListedAt;
+    public ShowInfo getmShow() {
+        return mShow;
     }
 
-    public void setListedAt(String listedAt) {
-        mListedAt = listedAt;
+    public void setmShow(ShowInfo mShow) {
+        this.mShow = mShow;
     }
 
-    public String getType() {
-        return mType;
-    }
-
-    public void setType(String type) {
-        mType = type;
-    }
-
-    public ShowInfo getShowInfo() {
-        return mShowInfo;
-    }
-
-    public void setShowInfo(ShowInfo showInfo) {
-        mShowInfo = showInfo;
-    }
-
-    @Override
-    public String toString() {
-        return "Show{" +
-                "mType='" + mType + '\'' +
-                ", mListedAt='" + mListedAt + '\'' +
-                '}';
-    }
 }

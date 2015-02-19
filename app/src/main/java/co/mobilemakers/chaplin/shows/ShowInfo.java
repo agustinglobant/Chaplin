@@ -3,45 +3,42 @@ package co.mobilemakers.chaplin.shows;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Micaela on 16/02/2015.
+ * Created by agustin.gugliotta on 19/02/2015.
  */
 public class ShowInfo {
     @SerializedName("title")
-    String mTitle;
+    private ShowId mTitle;
     @SerializedName("year")
-    String mYear;
+    private String mYear;
     @SerializedName("ids")
-    ShowIds mIds;
+    private ShowId mShowId;
 
     public ShowInfo() {
     }
 
-    public String getTitle() {
+    public ShowId getmTitle() {
         return mTitle;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
+    public void setmTitle(ShowId mTitle) {
+        this.mTitle = mTitle;
     }
 
-    public String getYear() {
+    public String getmYear() {
         return mYear;
     }
 
-    public void setYear(String year) {
-        mYear = year;
+    public void setmYear(String mYear) {
+        this.mYear = mYear;
     }
 
-    public ShowIds getIds() {
-        return mIds;
+    public ShowId getmShowId() {
+        return mShowId;
     }
 
-    public void setIds(ShowIds ids) {
-        mIds = ids;
-    }
 
     @Override
     public String toString() {
-        return mTitle + " (" + mYear + ")";
+        return mTitle + " (" + mYear + ") ";
     }
 }
