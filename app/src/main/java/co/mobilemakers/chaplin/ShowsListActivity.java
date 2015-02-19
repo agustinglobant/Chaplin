@@ -14,43 +14,15 @@ import java.io.IOException;
 
 public class ShowsListActivity extends ActionBarActivity {
 
-    private final OkHttpClient client = new OkHttpClient();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shows_list);
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new ShowsListFragment())
-//                    .commit();
-//        }
-
-        String token = getIntent().getStringExtra("token");
-        Request request = new Request.Builder()
-                .url(LoginService.BASE_URL + "/users/agustinglobant/watched/shows")
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer "+token)
-                .addHeader("trakt-api-version", "2")
-                .addHeader("trakt-api-key", getString(R.string.client_id))
-                .build();
-
-        client.newCall(request).enqueue(new com.squareup.okhttp.Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(com.squareup.okhttp.Response response) throws IOException {
-                String body = response.body().string();
-                Log.i("Body shows", body);
-//                Gson gson = new Gson();
-//                ArrayList<Show> la = new ArrayList<Show>();
-//                List<Show> list =  new Gson().fromJson(body,la.getClass());
-//                Log.i("Shows", list.toString());
-            }
-        });
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new ShowsListFragment())
+                    .commit();
+        }
     }
 
 
