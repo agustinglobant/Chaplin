@@ -23,4 +23,8 @@ public class Show {
         this.mShow = mShow;
     }
 
+    @Override
+    public String toString() {
+        return mShow.toString();
+    }
 }

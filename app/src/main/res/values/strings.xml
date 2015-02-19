@@ -9,6 +9,7 @@
     <string name="edit_text_username_hint">Username</string>
     <string name="edit_text_password_hint">Password</string>
     <string name="button_login">Login</string>
-
+    <string name="title_activity_episodes_list">Episodes</string>
+    <string name="title_activity_next_episode">NextEpisodeActivity</string>
 
 </resources>

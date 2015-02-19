@@ -11,23 +11,32 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ChaplinMainActivity"
-
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <data
-                    android:scheme="http"
                     android:host="trakt.tv"
-                    android:pathPrefix="/oauth/authorize" />
+                    android:pathPrefix="/oauth/authorize"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ShowsListActivity"
             android:label="@string/title_activity_shows_list" >
+        </activity>
+        <activity
+            android:name=".EpisodesListActivity"
+            android:label="@string/title_activity_episodes_list" >
+        </activity>
+        <activity
+            android:name=".NextEpisodeActivity"
+            android:label="@string/title_activity_next_episode" >
         </activity>
     </application>
 

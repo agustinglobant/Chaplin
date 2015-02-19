@@ -4,6 +4,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.util.List;
 
+import co.mobilemakers.chaplin.episodes.Episode;
 import co.mobilemakers.chaplin.shows.Show;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -20,19 +21,25 @@ public class ChaplinService {
     final static String TRAKT_API_URL = "https://api-v2launch.trakt.tv";
     final static String ACCEPTED_DATA = "application/json";
     final static String API_VERSION = "2";
-    final static String SHOWS_ENDPOINT = "/users/{username}/watched/shows";
+    final static String SHOWS_ENDPOINT = "/users/me/watched/shows";
+    final static String NEXT_EPISODE_ENDPOINT = "/shows/{id}/progress/watched";
     String mToken = "";
+    String mClientID = "";
 
     public ChaplinService() {
     }
 
     public interface ApiInterface {
         @GET(SHOWS_ENDPOINT)
-        void getShows(@Path("username") String username, Callback<List<Show>> callback);
+        void getShows(Callback<List<Show>> callback);
+
+        @GET(NEXT_EPISODE_ENDPOINT)
+        void getNextEpisode(@Path("id") String ID, Callback<Episode> callback);
     }
 
-       public ApiInterface generateServiceInterface(String token) {
+       public ApiInterface generateServiceInterface(String token, String client_id) {
         mToken = token;
+        mClientID = client_id;
         RestAdapter.Builder builder = new RestAdapter.Builder();
         builder.setEndpoint(TRAKT_API_URL)
                 .setClient(new OkClient(new OkHttpClient()))
@@ -42,7 +49,7 @@ public class ChaplinService {
                         request.addHeader("Content-Type", ACCEPTED_DATA);
                         request.addHeader("Authorization", "Bearer " + mToken);
                         request.addHeader("trakt-api-version", API_VERSION);
-                        request.addHeader("trakt-api-key", String.valueOf((R.string.client_id)));
+                        request.addHeader("trakt-api-key", mClientID);
                     }
                 });
         RestAdapter restAdapter = builder.build();

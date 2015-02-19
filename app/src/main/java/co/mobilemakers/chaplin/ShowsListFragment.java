@@ -1,10 +1,13 @@
 package co.mobilemakers.chaplin;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +21,11 @@ public class ShowsListFragment extends ListFragment {
 
     private ChaplinService.ApiInterface mChaplinInterface;
     private ArrayAdapter<Show> mAdapter;
-
-    String mUsername = "micaela.cavallo";
     String mToken = "";
+    String mClientID = "";
     final static String TOKEN = "token";
     final static String LOG_TAG = ShowsListFragment.class.getSimpleName();
+    public final static String ID_EPISODE = "id_episode";
 
     public ShowsListFragment() {
     }
@@ -30,9 +33,10 @@ public class ShowsListFragment extends ListFragment {
         @Override
     public void onAttach(Activity activity) {
             super.onAttach(activity);
-            retrieveToken();
+            mToken = getActivity().getIntent().getStringExtra(TOKEN);
+            mClientID = getString(R.string.client_id);
             ChaplinService chaplinService = new ChaplinService();
-            mChaplinInterface = chaplinService.generateServiceInterface(mToken);
+            mChaplinInterface = chaplinService.generateServiceInterface(mToken, mClientID);
         }
 
     @Override
@@ -41,20 +45,37 @@ public class ShowsListFragment extends ListFragment {
         prepareListView();
     }
 
-    private void retrieveToken() {
-        mToken = getActivity().getIntent().getStringExtra(TOKEN);
-    }
-
     private void prepareListView() {
         List<Show> shows = new ArrayList<>();
         mAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_shows, R.id.text_view_show_name, shows);
         setListAdapter(mAdapter);
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Show showSelected = mAdapter.getItem(position);
+                prepareArgumentAndFragment(showSelected);
+            }
+
+            private void prepareArgumentAndFragment(Show show) {
+                   /*     Bundle bundle = new Bundle();
+                bundle.putString(ID_EPISODE, show.getmShow().getmShowId().getmSlug());
+                setArguments(bundle);
+                getFragmentManager().beginTransaction().
+                        replace(R.id.container, new NextEpisodeFragment()).
+                        addToBackStack(null).
+                        commit(); */
+                Intent intent = new Intent(getActivity(), NextEpisodeActivity.class);
+                intent.putExtra(ID_EPISODE, show.getmShow().getmShowId().getmSlug());
+                intent.putExtra("token", mToken);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mChaplinInterface.getShows(mUsername, new Callback<List<Show>>() {
+        mChaplinInterface.getShows(new Callback<List<Show>>() {
             @Override
             public void success(List<Show> shows, Response response) {
                 if (response.getStatus() == 200) {

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ShowInfo {
     @SerializedName("title")
-    private ShowId mTitle;
+    private String mTitle;
     @SerializedName("year")
     private String mYear;
     @SerializedName("ids")
@@ -16,11 +16,11 @@ public class ShowInfo {
     public ShowInfo() {
     }
 
-    public ShowId getmTitle() {
+    public String getmTitle() {
         return mTitle;
     }
 
-    public void setmTitle(ShowId mTitle) {
+    public void setmTitle(String mTitle) {
         this.mTitle = mTitle;
     }
 
