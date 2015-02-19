@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,7 +91,7 @@ public class ChaplinMainActivity extends ActionBarActivity {
             public void onResponse(Response response) throws IOException {
                 String body = response.body().string();
                 Gson gson = new Gson();
-                TokenResponse mTokenResponse = gson.fromJson(body, TokenResponse.class);
+                AccessToken mTokenResponse = gson.fromJson(body, AccessToken.class);
                 saveAccessToken(mTokenResponse.getAccessToken());
             }
 
