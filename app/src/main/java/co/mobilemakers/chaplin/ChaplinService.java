@@ -25,25 +25,4 @@ public class ChaplinService {
     public ChaplinService() {
     }
 
-    public interface ApiInterface {
-        @GET(SHOWS_ENDPOINT)
-        void getShows(@Path("username")String username, Callback<List<WatchList>> callback);
-    }
-
-       public ApiInterface generateServiceInterface() {
-        RestAdapter.Builder builder = new RestAdapter.Builder();
-        builder.setEndpoint(TRAKT_API_URL)
-                .setClient(new OkClient(new OkHttpClient()))
-                .setRequestInterceptor(new RequestInterceptor() {
-                    @Override
-                    public void intercept(RequestFacade request) {
-                        request.addHeader("Content-Type", ACCEPTED_DATA);
-                        request.addHeader("trakt-api-version", API_VERSION);
-                       // request.addHeader("trakt-api-key", );
-                    }
-                });
-        RestAdapter restAdapter = builder.build();
-        return restAdapter.create(ApiInterface.class);
-    }
-
 }

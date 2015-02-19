@@ -1,26 +1,20 @@
 package co.mobilemakers.chaplin;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import co.mobilemakers.chaplin.shows.Show;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class ShowsListFragment extends ListFragment {
@@ -52,11 +46,11 @@ public class ShowsListFragment extends ListFragment {
     }
 
     private void getShows() {
-        String token = getActivity().getIntent().getStringExtra("token");
+        final String token = getActivity().getIntent().getStringExtra("token");
         Request request = new Request.Builder()
-                .url(LoginService.BASE_URL + "/users/agustinglobant/watched/shows")
+                .url(LoginService.BASE_URL + LoginService.ENDPOINT_WATCHED)
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer "+token)
+                .addHeader("Authorization", "Bearer " + token)
                 .addHeader("trakt-api-version", "2")
                 .addHeader("trakt-api-key", getString(R.string.client_id))
                 .build();
@@ -69,13 +63,49 @@ public class ShowsListFragment extends ListFragment {
 
             @Override
             public void onResponse(com.squareup.okhttp.Response response) throws IOException {
-                String body = response.body().string();
-                Log.i("Body shows", body);
-//                Gson gson = new Gson();
-//                ArrayList<Show> la = new ArrayList<Show>();
-//                List<Show> list =  new Gson().fromJson(body,la.getClass());
-//                Log.i("Shows", list.toString());
+                String bodyNameOfShows = response.body().string();
+                JsonParser jsonParser = new JsonParser();
+                JsonArray watchedList = jsonParser.parse(bodyNameOfShows).getAsJsonArray();
+                List<String> listOfNames = getListNamesOfWatchedShows(watchedList);
+
+                for (String name: listOfNames){
+                    final Request request = new Request.Builder()
+                            .url(LoginService.BASE_URL + LoginService.SHOW+name+LoginService.ENDPOINT_PROGRESS)
+                            .addHeader("Content-Type", "application/json")
+                            .addHeader("Authorization", "Bearer " + token)
+                            .addHeader("trakt-api-version", "2")
+                            .addHeader("trakt-api-key", getString(R.string.client_id))
+                            .build();
+
+                    client.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(Response response) throws IOException {
+                            String bodyUnwatchedEp = request.body().toString();
+                            Log.i("Unw", bodyUnwatchedEp);
+                        }
+                    });
+                }
             }
+
+            private List<String> getListNamesOfWatchedShows(JsonArray watchedList) {
+                List<String> list= new ArrayList<>();
+                for (int i = 0; i < watchedList.size(); i++) {
+                    list.add(watchedList.get(i)
+                            .getAsJsonObject()
+                            .get("show")
+                            .getAsJsonObject()
+                            .get("ids")
+                            .getAsJsonObject()
+                            .get("slug").getAsString());
+                }
+                return list;
+            }
+
         });
     }
 
