@@ -9,7 +9,10 @@
     <string name="edit_text_username_hint">Username</string>
     <string name="edit_text_password_hint">Password</string>
     <string name="button_login">Login</string>
-    <string name="title_activity_episodes_list">Episodes</string>
-    <string name="title_activity_next_episode">NextEpisodeActivity</string>
+    <string name="title_activity_next_episode">Episodes</string>
+    <string name="text_view_next_episode">Next episode to see:</string>
+    <string name="text_view_wait">Waiting...</string>
+    <string name ="check_box_watching">I\'m watching this</string>
+    <string name="button_confirm">Confirm</string>
 
 </resources>

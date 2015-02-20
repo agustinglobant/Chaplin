@@ -31,10 +31,6 @@
             android:label="@string/title_activity_shows_list" >
         </activity>
         <activity
-            android:name=".EpisodesListActivity"
-            android:label="@string/title_activity_episodes_list" >
-        </activity>
-        <activity
             android:name=".NextEpisodeActivity"
             android:label="@string/title_activity_next_episode" >
         </activity>

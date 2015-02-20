@@ -4,13 +4,15 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.util.List;
 
-import co.mobilemakers.chaplin.episodes.Episode;
+import co.mobilemakers.chaplin.episodes.NextEpisode;
 import co.mobilemakers.chaplin.shows.Show;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
@@ -23,6 +25,7 @@ public class ChaplinService {
     final static String API_VERSION = "2";
     final static String SHOWS_ENDPOINT = "/users/me/watched/shows";
     final static String NEXT_EPISODE_ENDPOINT = "/shows/{id}/progress/watched";
+    final static String WATCHING_EPISODE_ENDPOINT = "/checkin";
     String mToken = "";
     String mClientID = "";
 
@@ -34,7 +37,10 @@ public class ChaplinService {
         void getShows(Callback<List<Show>> callback);
 
         @GET(NEXT_EPISODE_ENDPOINT)
-        void getNextEpisode(@Path("id") String ID, Callback<Episode> callback);
+        void getNextEpisode(@Path("id") String ID, Callback<NextEpisode> callback);
+
+        @POST(WATCHING_EPISODE_ENDPOINT)
+        void putEpisodeLikeWatched(@Body String body, Callback<NextEpisode> callback);
     }
 
        public ApiInterface generateServiceInterface(String token, String client_id) {

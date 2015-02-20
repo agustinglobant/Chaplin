@@ -53,17 +53,10 @@ public class ShowsListFragment extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Show showSelected = mAdapter.getItem(position);
-                prepareArgumentAndFragment(showSelected);
+                prepareIntent(showSelected);
             }
 
-            private void prepareArgumentAndFragment(Show show) {
-                   /*     Bundle bundle = new Bundle();
-                bundle.putString(ID_EPISODE, show.getmShow().getmShowId().getmSlug());
-                setArguments(bundle);
-                getFragmentManager().beginTransaction().
-                        replace(R.id.container, new NextEpisodeFragment()).
-                        addToBackStack(null).
-                        commit(); */
+            private void prepareIntent(Show show) {
                 Intent intent = new Intent(getActivity(), NextEpisodeActivity.class);
                 intent.putExtra(ID_EPISODE, show.getmShow().getmShowId().getmSlug());
                 intent.putExtra("token", mToken);
