@@ -1,9 +1,8 @@
 package co.mobilemakers.chaplin;
 
+import com.google.gson.JsonObject;
 import com.squareup.okhttp.OkHttpClient;
-
 import java.util.List;
-
 import co.mobilemakers.chaplin.episodes.NextEpisode;
 import co.mobilemakers.chaplin.shows.Show;
 import retrofit.Callback;
@@ -40,7 +39,7 @@ public class ChaplinService {
         void getNextEpisode(@Path("id") String ID, Callback<NextEpisode> callback);
 
         @POST(WATCHING_EPISODE_ENDPOINT)
-        void putEpisodeLikeWatched(@Body String body, Callback<NextEpisode> callback);
+        void putEpisodeLikeWatched(@Body JsonObject body, Callback<JsonObject> callback);
     }
 
        public ApiInterface generateServiceInterface(String token, String client_id) {

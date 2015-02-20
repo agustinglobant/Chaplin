@@ -25,7 +25,7 @@ public class ShowsListFragment extends ListFragment {
     String mClientID = "";
     final static String TOKEN = "token";
     final static String LOG_TAG = ShowsListFragment.class.getSimpleName();
-    public final static String ID_EPISODE = "id_episode";
+    public final static String ID_SHOW = "id_episode";
 
     public ShowsListFragment() {
     }
@@ -58,7 +58,7 @@ public class ShowsListFragment extends ListFragment {
 
             private void prepareIntent(Show show) {
                 Intent intent = new Intent(getActivity(), NextEpisodeActivity.class);
-                intent.putExtra(ID_EPISODE, show.getmShow().getmShowId().getmSlug());
+                intent.putExtra(ID_SHOW, show.getmShow().getmShowId().getmSlug());
                 intent.putExtra("token", mToken);
                 startActivity(intent);
             }
