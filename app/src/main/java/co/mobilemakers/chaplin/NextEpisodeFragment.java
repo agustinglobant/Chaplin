@@ -87,7 +87,7 @@ public class NextEpisodeFragment extends Fragment {
     }
 
     private void prepareIntent(String show) {
-        Intent intent = new Intent(getActivity(), ShowsListFragment.class);
+        Intent intent = new Intent(getActivity(), ShowsListActivity.class);
         intent.putExtra(ShowsListFragment.ID_SHOW, show);
         intent.putExtra(ShowsListFragment.TOKEN, mToken);
         startActivity(intent);
